@@ -33,9 +33,76 @@ public class StreamsAPI {
         //getDistinctNumbers();
         //getDishNameGreaterCalories();
         //limitDishes();
-        skipDishes();
+        //skipDishes();
+        //getDishNames();
+        //getWordLengths();
+        //getDishNamesAndLengths();
+        //extractUniqueCharacters();
+        extractCartesianProduct();
+
+    }
+
+    private static void extractCartesianProduct() {
+        List<Integer> numbers1 = Arrays.asList(1, 2, 3);
+        List<Integer> numbers2 = Arrays.asList(3, 4);
+        List<int[]> pairs = numbers1.stream()
+                .flatMap(i -> numbers2.stream()
+                        .map(j -> new int[]{i, j}))
+                .collect(toList());
+        pairs.stream()
+                .map(StreamsAPI::formatInts)
+                .forEach(System.out::print);
+        System.out.println();
+        System.out.println("OTHER: " + pairs.stream()
+                .map(StreamsAPI::formatInts)
+                .collect(joining(",")));
+        System.out.println();
+
+        List<int[]> pairs2 = numbers1.stream()
+                .flatMap(i -> numbers2.stream()
+                        .filter(j -> (i + j) % 3 == 0)
+                        .map(j -> new int[]{i, j}))
+                .collect(toList());
+
+        pairs2.stream()
+                .map(StreamsAPI::formatInts)
+                .forEach(System.out::print);
+
+        System.out.println();
+        System.out.println("OTHER: " + pairs2.stream()
+                .map(StreamsAPI::formatInts)
+                .collect(joining(",")));
+    }
+
+    private static void extractUniqueCharacters() {
+        List<String> words = Arrays.asList("Hello", "World");
+        List<String> uniqueCharacters = words.stream()
+                .map(word -> word.split(""))
+                .flatMap(Arrays::stream)
+                .distinct()
+                .collect(toList());
+        System.out.println(uniqueCharacters);
+    }
+
+    private static void getWordLengths() {
+        List<String> words = Arrays.asList("Java8", "Lambdas", "In", "Action");
+        List<Integer> wordLengths = words.stream()
+                .map(String::length)
+                .collect(toList());
+        wordLengths.forEach(System.out::println);
+    }
+
+    private static void getDishNames() {
         List<String> dishNames = menu.stream()
                 .map(Dish::getName)
+                .collect(toList());
+        dishNames.forEach(System.out::println);
+    }
+
+    private static void getDishNamesAndLengths() {
+        List<Integer> dishNames = menu.stream()
+                .map(Dish::getName)
+                .map(String::length)
                 .collect(toList());
         dishNames.forEach(System.out::println);
     }
@@ -127,6 +194,12 @@ public class StreamsAPI {
         System.out.println("GET LOW CALORIES DISHES");
         lowCaloricDishesName.forEach(System.out::println);
         System.out.println();
+    }
+
+    private static String formatInts(int[] p) {
+        return String.format("(%s)", Arrays.stream(p)
+                .mapToObj(n -> String.valueOf(n))
+                .collect(joining(",")));
     }
 }
 

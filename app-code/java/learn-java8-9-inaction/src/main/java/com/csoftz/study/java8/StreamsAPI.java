@@ -34,6 +34,10 @@ public class StreamsAPI {
         //getDishNameGreaterCalories();
         //limitDishes();
         skipDishes();
+        List<String> dishNames = menu.stream()
+                .map(Dish::getName)
+                .collect(toList());
+        dishNames.forEach(System.out::println);
     }
 
     private static void skipDishes() {

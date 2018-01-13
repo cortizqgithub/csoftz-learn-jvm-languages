@@ -5,12 +5,11 @@ import com.csoftz.study.java8.domain.Dish;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 public class StreamsAPI {
     private static List<Dish> menu = Arrays.asList(
@@ -38,8 +37,32 @@ public class StreamsAPI {
         //getWordLengths();
         //getDishNamesAndLengths();
         //extractUniqueCharacters();
-        extractCartesianProduct();
+        //extractCartesianProduct();
+        findData();
 
+
+    }
+
+    private static void findData() {
+        if (menu.stream().anyMatch(Dish::isVegetarian)) {
+            System.out.println("The menu is (somewhat) vegetarian friendly!!");
+        }
+        boolean isHealthy = menu.stream()
+                .allMatch(dish -> dish.getCalories() < 1000);
+        System.out.printf("Is all Healthy %s:%n", isHealthy);
+        boolean isNoneHealthy = menu.stream()
+                .noneMatch(d -> d.getCalories() >= 1000);
+        System.out.printf("Is none Health %s\n", isNoneHealthy);
+        Optional<Dish> anyDish =
+                menu.stream()
+                        .filter(Dish::isVegetarian)
+                        .findAny();
+        System.out.printf("Any dish: %s%n", anyDish);
+
+        menu.stream()
+                .filter(Dish::isVegetarian)
+                .findAny()
+                .ifPresent(dish -> System.out.println(dish.getName()));
     }
 
     private static void extractCartesianProduct() {

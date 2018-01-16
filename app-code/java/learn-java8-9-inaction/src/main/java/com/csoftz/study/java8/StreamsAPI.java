@@ -1,3 +1,17 @@
+/*----------------------------------------------------------------------------*/
+/* Source File:   STREAMSAPI.JAVA                                             */
+/* Description:   Java 8 Stream Collection API learning                       */
+/* Author:        Carlos Adolfo Ortiz Quirós (COQ)                            */
+/* Date:          Jan.12/2018                                                 */
+/* Last Modified: Jan.16/2018                                                 */
+/* Version:       1.1                                                         */
+/* Copyright (c), 2017 CSoftZ, Ceiba.                                         */
+/*----------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------
+ History
+ Jan.12/2018 COQ  File created.
+ -----------------------------------------------------------------------------*/
+
 package com.csoftz.study.java8;
 
 import com.csoftz.study.java8.domain.Dish;
@@ -9,8 +23,18 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
+/**
+ * Java 8 Stream Collection API learning
+ *
+ * @author Carlos Adolfo Ortiz Quirós (COQ)
+ * @version 1.1, Jan.16/2018
+ * @since 1.8 (JDK), Jan.12/2018
+ */
+@SuppressWarnings("unused")
 public class StreamsAPI {
     private static List<Dish> menu = Arrays.asList(
             new Dish("pork", false, 800, Dish.Type.MEAT),
@@ -23,6 +47,11 @@ public class StreamsAPI {
             new Dish("prawns", false, 300, Dish.Type.FISH),
             new Dish("salmon", false, 450, Dish.Type.FISH));
 
+    /**
+     * Program entry point.
+     *
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
         //getSampleLowCaloriesDishes();
         //getDishesType();
@@ -38,11 +67,42 @@ public class StreamsAPI {
         //getDishNamesAndLengths();
         //extractUniqueCharacters();
         //extractCartesianProduct();
-        findData();
-
-
+        //findData();
+        reduceValues();
     }
 
+    /**
+     * redude Stream API examples
+     */
+    private static void reduceValues() {
+        List<Integer> numbers = Arrays.asList(4, 5, 3, 9);
+        int sum = numbers.stream().reduce(0, (a, b) -> a + b); // Integer::sum instead of lambda
+        System.out.println(sum);
+
+        int product = numbers.stream().reduce(1, (a, b) -> a * b);
+        System.out.println(product);
+
+        Optional<Integer> sumOptional = numbers.stream().reduce((a, b) -> a + b);
+        System.out.println(sumOptional);
+
+        System.out.println("MAX (method ref) " + numbers.stream().reduce(Integer::max));
+        System.out.println("MAX (lambda) " + numbers.stream().reduce((x, y) -> (x >= y) ? x : y));
+        System.out.println("MIN (method ref) " + numbers.stream().reduce(Integer::min));
+        System.out.println("MIN (lambda) " + numbers.stream().reduce((x, y) -> (x <= y) ? x : y));
+
+        // How would you count the number of dishes in a stream using the 'map' and 'reduce' methods?
+        int count = menu.stream()
+                .map(d -> 1)
+                .reduce(0, (a, b) -> a + b); // This uses the map-reduce pattern
+
+        System.out.println("Number of dishes: (map-reduce version): " + count);
+        System.out.println("Number of dishes: (count version): " + menu.stream().count());
+        System.out.println("Number of dishes: (LIST count): " + menu.size());
+    }
+
+    /**
+     * Data finding Stream API examples
+     */
     private static void findData() {
         if (menu.stream().anyMatch(Dish::isVegetarian)) {
             System.out.println("The menu is (somewhat) vegetarian friendly!!");
@@ -63,8 +123,23 @@ public class StreamsAPI {
                 .filter(Dish::isVegetarian)
                 .findAny()
                 .ifPresent(dish -> System.out.println(dish.getName()));
+
+        List<Integer> someNumbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        someNumbers.stream()
+                .map(n -> n * n)
+                .filter(n -> n % 3 == 0)
+                .forEach(n -> System.out.print(n + " "));
+
+        Optional<Integer> firstSquareDivisibleByThree = someNumbers.stream()
+                .map(n -> n * n)
+                .filter(n -> n % 3 == 0)
+                .findFirst();
+        System.out.println(firstSquareDivisibleByThree);
     }
 
+    /**
+     * Stream API examples for cartesian product
+     */
     private static void extractCartesianProduct() {
         List<Integer> numbers1 = Arrays.asList(1, 2, 3);
         List<Integer> numbers2 = Arrays.asList(3, 4);
@@ -97,6 +172,9 @@ public class StreamsAPI {
                 .collect(joining(",")));
     }
 
+    /**
+     * Stream API examples get unique characters.
+     */
     private static void extractUniqueCharacters() {
         List<String> words = Arrays.asList("Hello", "World");
         List<String> uniqueCharacters = words.stream()
@@ -107,6 +185,9 @@ public class StreamsAPI {
         System.out.println(uniqueCharacters);
     }
 
+    /**
+     * Stream API examples get Word lengths
+     */
     private static void getWordLengths() {
         List<String> words = Arrays.asList("Java8", "Lambdas", "In", "Action");
         List<Integer> wordLengths = words.stream()
@@ -122,6 +203,9 @@ public class StreamsAPI {
         dishNames.forEach(System.out::println);
     }
 
+    /**
+     * Stream API examples sample to get Dish Names and  their length
+     */
     private static void getDishNamesAndLengths() {
         List<Integer> dishNames = menu.stream()
                 .map(Dish::getName)
@@ -130,6 +214,9 @@ public class StreamsAPI {
         dishNames.forEach(System.out::println);
     }
 
+    /**
+     * Stream API examples Skip example
+     */
     private static void skipDishes() {
         List<Dish> dishes = menu.stream()
                 .filter(d -> d.getCalories() > 300)
@@ -138,6 +225,9 @@ public class StreamsAPI {
         dishes.forEach(System.out::println);
     }
 
+    /**
+     * Stream API examples get limit
+     */
     private static void limitDishes() {
         List<Dish> dishes = menu.stream()
                 .filter(dish -> dish.getCalories() > 300)
@@ -146,6 +236,9 @@ public class StreamsAPI {
         dishes.forEach(System.out::println);
     }
 
+    /**
+     * Stream API examples: Retrieves all dishes with higher calories.
+     */
     private static void getDishNameGreaterCalories() {
         List<Dish> specialMenu = Arrays.asList(
                 new Dish("season fruit", true, 120, Dish.Type.OTHER),
@@ -155,11 +248,14 @@ public class StreamsAPI {
                 new Dish("french fries", true, 530, Dish.Type.OTHER));
         specialMenu.stream()
                 .filter(dish -> dish.getCalories() > 320)
-                .map(d -> d.getName())
+                .map(Dish::getName)
                 .collect(toList())
                 .forEach(System.out::println);
     }
 
+    /**
+     * Stream API examples: Get only distinct numbers
+     */
     private static void getDistinctNumbers() {
         List<Integer> numbers = Arrays.asList(1, 2, 1, 3, 3, 2, 4);
         numbers.stream()
@@ -168,6 +264,9 @@ public class StreamsAPI {
                 .forEach(System.out::println);
     }
 
+    /**
+     * Stream API examples: Print lines to console to indicate Stream API execution.
+     */
     private static void getDishNameDebug() {
         List<String> names =
                 menu.stream().filter(dish -> {
@@ -180,6 +279,9 @@ public class StreamsAPI {
         System.out.println(names);
     }
 
+    /**
+     * Stream API examples: A way to combine strings (joining)
+     */
     private static void combineStrings() {
         List<String> title = Arrays.asList("Java8", "in", "Action");
         Stream<String> s = title.stream();
@@ -189,6 +291,9 @@ public class StreamsAPI {
         System.out.println(title.stream().collect(joining(",")));
     }
 
+    /**
+     * Stream API examples: Get the three highest calorie dishes
+     */
     private static void getThreeHighCalories() {
         List<String> threeHighCaloricDishNames =
                 menu.stream()
@@ -199,6 +304,9 @@ public class StreamsAPI {
         System.out.println(threeHighCaloricDishNames);
     }
 
+    /**
+     * Stream API examples:Get all dishes grouped by dishes
+     */
     private static void getDishesType() {
         Map<Dish.Type, List<Dish>> dishesByType =
                 menu.stream().collect(groupingBy(Dish::getType));
@@ -207,6 +315,9 @@ public class StreamsAPI {
         System.out.println();
     }
 
+    /**
+     * Stream API examples: Get the lowest calories for dishes
+     */
     private static void getSampleLowCaloriesDishes() {
         List<String> lowCaloricDishesName = menu.parallelStream()
                 .filter(d -> d.getCalories() < 400)
@@ -219,9 +330,14 @@ public class StreamsAPI {
         System.out.println();
     }
 
+    /**
+     * Stream API examples: A method reference used instead of a Lambda expression.
+     * @param p the array of integers to format
+     * @return An String with array values formatted.
+     */
     private static String formatInts(int[] p) {
         return String.format("(%s)", Arrays.stream(p)
-                .mapToObj(n -> String.valueOf(n))
+                .mapToObj(String::valueOf)
                 .collect(joining(",")));
     }
 }

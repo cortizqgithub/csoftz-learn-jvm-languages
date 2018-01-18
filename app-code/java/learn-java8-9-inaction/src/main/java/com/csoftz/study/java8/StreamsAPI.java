@@ -3,7 +3,7 @@
 /* Description:   Java 8 Stream Collection API learning                       */
 /* Author:        Carlos Adolfo Ortiz Quirós (COQ)                            */
 /* Date:          Jan.12/2018                                                 */
-/* Last Modified: Jan.16/2018                                                 */
+/* Last Modified: Jan.17/2018                                                 */
 /* Version:       1.1                                                         */
 /* Copyright (c), 2017 CSoftZ, Ceiba.                                         */
 /*----------------------------------------------------------------------------*/
@@ -11,7 +11,6 @@
  History
  Jan.12/2018 COQ  File created.
  -----------------------------------------------------------------------------*/
-
 package com.csoftz.study.java8;
 
 import com.csoftz.study.java8.domain.Dish;
@@ -31,21 +30,11 @@ import static java.util.stream.Collectors.toList;
  * Java 8 Stream Collection API learning
  *
  * @author Carlos Adolfo Ortiz Quirós (COQ)
- * @version 1.1, Jan.16/2018
+ * @version 1.1, Jan.17/2018
  * @since 1.8 (JDK), Jan.12/2018
  */
 @SuppressWarnings("unused")
-public class StreamsAPI {
-    private static List<Dish> menu = Arrays.asList(
-            new Dish("pork", false, 800, Dish.Type.MEAT),
-            new Dish("beef", false, 700, Dish.Type.MEAT),
-            new Dish("chicken", false, 400, Dish.Type.MEAT),
-            new Dish("french fries", true, 530, Dish.Type.OTHER),
-            new Dish("rice", true, 350, Dish.Type.OTHER),
-            new Dish("season fruit", true, 120, Dish.Type.OTHER),
-            new Dish("pizza", true, 550, Dish.Type.OTHER),
-            new Dish("prawns", false, 300, Dish.Type.FISH),
-            new Dish("salmon", false, 450, Dish.Type.FISH));
+public class StreamsAPI extends StreamAPIBase {
 
     /**
      * Program entry point.
@@ -68,7 +57,21 @@ public class StreamsAPI {
         //extractUniqueCharacters();
         //extractCartesianProduct();
         //findData();
-        reduceValues();
+        //reduceValues();
+        //generateStreams();
+
+        int[] numbers = {2, 3, 5, 7, 11, 13};
+        int sum = Arrays.stream(numbers).sum();
+        System.out.println(sum);
+    }
+
+    /**
+     * How to generate Streams from values and other goodies.
+     */
+    private static void generateStreams() {
+        Stream<String> stream = Stream.of("Java 8 ", "Lambdas ", "In ", "Action");
+        stream.map(String::toUpperCase).forEach(System.out::println);
+        //  Stream.ofNullable(value) --> Only in Java 9
     }
 
     /**

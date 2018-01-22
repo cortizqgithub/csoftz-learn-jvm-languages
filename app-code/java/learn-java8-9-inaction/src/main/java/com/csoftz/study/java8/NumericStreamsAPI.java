@@ -3,9 +3,9 @@
 /* Description:   Streams API numeric Stream Specializations examples         */
 /* Author:        Carlos Adolfo Ortiz Quirós (COQ)                            */
 /* Date:          Jan.16/2018                                                 */
-/* Last Modified: Jan.16/2018                                                 */
+/* Last Modified: Jan.22/2018                                                 */
 /* Version:       1.1                                                         */
-/* Copyright (c), 2017 CSoftZ, Ceiba.                                         */
+/* Copyright (c), 2018 CSoftZ.                                                */
 /*----------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------
  History
@@ -23,7 +23,7 @@ import java.util.stream.Stream;
  * Streams API numeric Stream Specializations examples
  *
  * @author Carlos Adolfo Ortiz Quirós (COQ)
- * @version 1.1, Jan.16/2018
+ * @version 1.1, Jan.22/2018
  * @since 1.8 (JDK), Jan.16/2018
  */
 @SuppressWarnings("unused")

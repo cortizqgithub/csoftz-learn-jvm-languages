@@ -3,9 +3,9 @@
 /* Description:   Streams API example with the trader, transaction domain     */
 /* Author:        Carlos Adolfo Ortiz Quirós (COQ)                            */
 /* Date:          Jan.16/2018                                                 */
-/* Last Modified: Jan.16/2018                                                 */
+/* Last Modified: Jan.22/2018                                                 */
 /* Version:       1.1                                                         */
-/* Copyright (c), 2017 CSoftZ, Ceiba.                                         */
+/* Copyright (c), 2018 CSoftZ.                                                */
 /*----------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------
  History
@@ -16,8 +16,6 @@ package com.csoftz.study.java8;
 import com.csoftz.study.java8.domain.Trader;
 import com.csoftz.study.java8.domain.Transaction;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static java.util.Comparator.comparing;
@@ -27,22 +25,10 @@ import static java.util.stream.Collectors.joining;
  * Streams API example with the trader, transaction domain
  *
  * @author Carlos Adolfo Ortiz Quirós (COQ)
- * @version 1.1, Jan.16/2018
+ * @version 1.1, Jan.22/2018
  * @since 1.8 (JDK), Jan.16/2018
  */
-public class TraderTransactionsAPI {
-    private static Trader raoul = new Trader("Raoul", "Cambridge");
-    private static Trader mario = new Trader("Mario", "Milan");
-    private static Trader alan = new Trader("Alan", "Cambridge");
-    private static Trader brian = new Trader("Brian", "Cambridge");
-    private static List<Transaction> transactions = Arrays.asList(
-            new Transaction(brian, 2011, 300),
-            new Transaction(raoul, 2012, 1000),
-            new Transaction(raoul, 2011, 400),
-            new Transaction(mario, 2012, 710),
-            new Transaction(mario, 2012, 700),
-            new Transaction(alan, 2012, 950)
-    );
+public class TraderTransactionsAPI extends StreamAPIBase {
 
     /**
      * Program entry point.

@@ -3,9 +3,9 @@
 /* Description:   Java 8 Stream Files API learning                            */
 /* Author:        Carlos Adolfo Ortiz Quirós (COQ)                            */
 /* Date:          Jan.17/2018                                                 */
-/* Last Modified: Jan.18/2018                                                 */
+/* Last Modified: Jan.22/2018                                                 */
 /* Version:       1.1                                                         */
-/* Copyright (c), 2017 CSoftZ, Ceiba.                                         */
+/* Copyright (c), 2018 CSoftZ.                                                */
 /*----------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------
  History
@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  * Java 8 Stream Files API learning
  *
  * @author Carlos Adolfo Ortiz Quirós (COQ)
- * @version 1.1, Jan.18/2018
+ * @version 1.1, Jan.22/2018
  * @since 1.8 (JDK), Jan.18/2018
  */
 @SuppressWarnings("unused")

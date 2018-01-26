@@ -21,7 +21,9 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.averagingInt;
 import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.maxBy;
+import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.summarizingInt;
 import static java.util.stream.Collectors.summingInt;
 
@@ -43,7 +45,41 @@ public class StreamCollectAPI extends StreamAPIBase {
     public static void main(String[] args) {
         //countMenuEntries();
         //getMaxCaloriesInMenu();
-        doSummarization();
+        //doSummarization();
+        doStringJoining();
+        //doReducing();
+    }
+
+    /**
+     * Play with 'reducing' Collector factory.
+     */
+    private static void doReducing() {
+        // A similar way to do so is found in 'doSummarization()'.
+        int totalCalories = menu.stream().collect(reducing(0, Dish::getCalories, (i, j) -> i + j));
+        System.out.println(totalCalories);
+
+        int totalCalories2 = menu.stream().collect(reducing(0, Dish::getCalories, Integer::sum));
+        System.out.println(totalCalories2);
+
+        // A similar way to do so is found in 'getMaxCaloriesInMenu()'
+        Optional<Dish> mostCalorieDish =
+                menu.stream().collect(reducing(
+                        (d1, d2) -> d1.getCalories() > d2.getCalories() ? d1 : d2));
+        System.out.println(mostCalorieDish);
+    }
+
+    /**
+     * Play with the 'joining' Collector
+     */
+    private static void doStringJoining() {
+        //menu.stream().collect(joining()); -> wonder why this does not compile
+        System.out.println(menu.stream().map(Dish::getName).collect(joining()));
+        System.out.println(menu.stream().map(Dish::getName).collect(joining(",")));
+        System.out.println(menu.stream().map(Dish::toString).collect(joining()));
+
+        // Using 'reducing'.
+        System.out.println(menu.stream().map(Dish::getName).collect(reducing((s1, s2) -> s1 + s2)).get());
+        System.out.println(menu.stream().collect(reducing("", Dish::getName, (s1, s2) -> s1 + s2)));
     }
 
     /**

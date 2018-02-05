@@ -27,9 +27,10 @@ public class Transaction {
 
     /**
      * Constructor with parameters
+     *
      * @param trader Associated trader who made the transaction
-     * @param year Transaction year
-     * @param value Value traded.
+     * @param year   Transaction year
+     * @param value  Value traded.
      */
     public Transaction(Trader trader, int year, int value) {
         this.trader = trader;
@@ -51,6 +52,7 @@ public class Transaction {
 
     /**
      * Prints domain object as an String representation.
+     *
      * @return
      */
     @Override

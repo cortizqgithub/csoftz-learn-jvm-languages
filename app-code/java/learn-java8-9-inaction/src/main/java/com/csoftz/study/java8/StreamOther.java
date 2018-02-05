@@ -59,7 +59,7 @@ public class StreamOther {
                 .forEach(t -> System.out.println("(" + t[0] + "," + t[1] + ")"));
 
         Stream.iterate(new int[]{0, 1},
-                t -> new int[]{t[1],t[0] + t[1]})
+                t -> new int[]{t[1], t[0] + t[1]})
                 .limit(10)
                 .map(t -> t[0])
                 .forEach(System.out::println);
@@ -81,6 +81,7 @@ public class StreamOther {
         IntSupplier fib = new IntSupplier() {
             private int previous = 0;
             private int current = 1;
+
             public int getAsInt() {
                 int oldPrevious = this.previous;
                 int nextValue = this.previous + this.current;

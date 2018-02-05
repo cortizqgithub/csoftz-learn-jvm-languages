@@ -335,6 +335,7 @@ public class StreamsAPI extends StreamAPIBase {
 
     /**
      * Stream API examples: A method reference used instead of a Lambda expression.
+     *
      * @param p the array of integers to format
      * @return An String with array values formatted.
      */

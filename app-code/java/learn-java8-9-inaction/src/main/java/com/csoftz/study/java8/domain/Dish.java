@@ -28,10 +28,11 @@ public class Dish {
 
     /**
      * Constructor with parameters
-     * @param name  Description of the Dish
+     *
+     * @param name       Description of the Dish
      * @param vegetarian Indicates that the dish is  vegetarian
-     * @param calories How many calories contains
-     * @param type Indicates the kind of dish
+     * @param calories   How many calories contains
+     * @param type       Indicates the kind of dish
      */
     public Dish(String name, boolean vegetarian, int calories, Type type) {
         this.name = name;

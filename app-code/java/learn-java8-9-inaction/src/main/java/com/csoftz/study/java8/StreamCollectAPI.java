@@ -3,7 +3,7 @@
 /* Description:   Java 8 Stream Collection API learning (use of Collectors)   */
 /* Author:        Carlos Adolfo Ortiz Quirós (COQ)                            */
 /* Date:          Jan.18/2018                                                 */
-/* Last Modified: Feb.05/2018                                                 */
+/* Last Modified: Feb.14/2018                                                 */
 /* Version:       1.3                                                         */
 /* Copyright (c), 2018 CSoftZ.                                                */
 /*----------------------------------------------------------------------------*/
@@ -21,9 +21,12 @@ import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static java.util.Arrays.asList;
+import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.averagingInt;
+import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
@@ -33,12 +36,13 @@ import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.summarizingInt;
 import static java.util.stream.Collectors.summingInt;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Java 8 Stream Collection API learning (use of Collectors)
  *
  * @author Carlos Adolfo Ortiz Quirós (COQ)
- * @version 1.3, Feb.05/2018
+ * @version 1.3, Feb.14/2018
  * @since 1.8 (JDK), Jan.18/2018
  */
 @SuppressWarnings("unused")
@@ -66,11 +70,11 @@ public class StreamCollectAPI extends StreamAPIBase {
         System.out.println(dishesByType);
 
         Map<CaloricLevel, List<Dish>> dishesByCaloricLevel = menu.stream().collect(
-                groupingBy(dish -> {
-                    if (dish.getCalories() <= 400) return CaloricLevel.DIET;
-                    else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
-                    else return CaloricLevel.FAT;
-                }));
+            groupingBy(dish -> {
+                if (dish.getCalories() <= 400) return CaloricLevel.DIET;
+                else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
+                else return CaloricLevel.FAT;
+            }));
         System.out.println("Dishes By Caloric Level");
         System.out.println(dishesByCaloricLevel);
 
@@ -83,7 +87,7 @@ public class StreamCollectAPI extends StreamAPIBase {
         //System.out.println(caloricDishesByType);
 
         Map<Dish.Type, List<String>> dishNamesByType = menu.stream()
-                .collect(groupingBy(Dish::getType, mapping(Dish::getName, toList())));
+            .collect(groupingBy(Dish::getType, mapping(Dish::getName, toList())));
         System.out.println("Dish Names By Type");
         System.out.println(dishNamesByType);
 
@@ -107,6 +111,50 @@ public class StreamCollectAPI extends StreamAPIBase {
         //                        toSet())));
         //System.out.println(dishNamesByType);
 
+
+        System.out.println("Use of Multi level Grouping");
+        Map<Dish.Type, Map<CaloricLevel, List<Dish>>> dishesByTypeCaloricLevel = menu.stream().collect(
+            groupingBy(Dish::getType,
+                groupingBy(dish -> {
+                    if (dish.getCalories() <= 400) return CaloricLevel.DIET;
+                    else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
+                    else return CaloricLevel.FAT;
+                })
+            )
+        );
+        System.out.println(dishesByTypeCaloricLevel);
+
+        System.out.println("Collecting data in subgroups");
+        Map<Dish.Type, Long> typesCount = menu.stream().collect(groupingBy(Dish::getType, counting()));
+        System.out.println(typesCount);
+
+        System.out.println("Getting most Caloric by Type");
+        Map<Dish.Type, Optional<Dish>> mostCaloricByType = menu.stream()
+            .collect(groupingBy(Dish::getType, maxBy(comparingInt(Dish::getCalories))));
+        System.out.println(mostCaloricByType);
+
+        System.out.println("Adapting the collector result to a different result type");
+        Map<Dish.Type, Dish> mostCaloricByType2 = menu.stream()
+            .collect(groupingBy(Dish::getType, collectingAndThen(
+                maxBy(comparingInt(Dish::getCalories)),
+                Optional::get)));
+        System.out.println(mostCaloricByType2);
+
+        System.out.println("Total Calories By Type");
+        Map<Dish.Type, Integer> totalCaloriesByType = menu.stream().collect(groupingBy(Dish::getType,
+            summingInt(Dish::getCalories)));
+
+        Map<Dish.Type, Set<CaloricLevel>> caloricLevelsByType =
+            menu.stream().collect(
+                groupingBy(Dish::getType,
+                    mapping(
+                        dish -> {
+                            if (dish.getCalories() <= 400) return CaloricLevel.DIET;
+                            else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
+                            else return CaloricLevel.FAT;
+                        },
+                        toSet()
+                    )));
     }
 
     /**
@@ -122,8 +170,8 @@ public class StreamCollectAPI extends StreamAPIBase {
 
         // A similar way to do so is found in 'getMaxCaloriesInMenu()'
         Optional<Dish> mostCalorieDish =
-                menu.stream().collect(reducing(
-                        (d1, d2) -> d1.getCalories() > d2.getCalories() ? d1 : d2));
+            menu.stream().collect(reducing(
+                (d1, d2) -> d1.getCalories() > d2.getCalories() ? d1 : d2));
         System.out.println(mostCalorieDish);
     }
 
@@ -147,7 +195,7 @@ public class StreamCollectAPI extends StreamAPIBase {
     private static void doSummarization() {
         // Here you can also use 'summingLong' and 'summingDouble' collector methods.
         int totalCalories = menu.stream()
-                .collect(summingInt(Dish::getCalories));
+            .collect(summingInt(Dish::getCalories));
         System.out.println(totalCalories);
 
         double avgCalories = menu.stream().collect(averagingInt(Dish::getCalories));
@@ -155,7 +203,7 @@ public class StreamCollectAPI extends StreamAPIBase {
 
         // You can also use 'summarizingLong' and 'summarizingDouble' collector methods.
         IntSummaryStatistics menuStatistics =
-                menu.stream().collect(summarizingInt(Dish::getCalories));
+            menu.stream().collect(summarizingInt(Dish::getCalories));
         System.out.println(menuStatistics);
     }
 
@@ -163,7 +211,7 @@ public class StreamCollectAPI extends StreamAPIBase {
      * Determines which entry in menu
      */
     private static void getMaxCaloriesInMenu() {
-        Comparator<Dish> dishCaloriesComparator = Comparator.comparingInt(Dish::getCalories);
+        Comparator<Dish> dishCaloriesComparator = comparingInt(Dish::getCalories);
         Optional<Dish> mostCalorieDish = menu.stream().collect(maxBy(dishCaloriesComparator));
         System.out.println(mostCalorieDish);
     }

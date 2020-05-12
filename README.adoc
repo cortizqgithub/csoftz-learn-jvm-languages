@@ -1,3 +1,6 @@
 = csoftz-learn-jvm-languages README
 
-V1.0.0-Jan.12/2018
+V1.0.1-20200512
+
+Here you will find tips and tricks in actual code for '*_Java_*', '*_Kotlin_*' and '*_Scala_*', that is, the
+languages I am most interested for the *JVM*.
